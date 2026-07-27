@@ -14,12 +14,17 @@ import {
 } from 'firebase/firestore'
 
 const QUICK_MESSAGES = [
+  // Urdu Quick Messages
   "السلام علیکم، کیا کام دستیاب ہے؟",
   "آپ کا مقام (Location) کہاں ہے؟",
   "آپ کا فائنل ریٹ کیا ہوگا؟",
   "میں کل صبح 8 بجے آ سکتا ہوں۔",
   "ہاں، میں یہ کام کر سکتا ہوں۔",
-  "شکریہ!"
+  // English Quick Messages
+  "Hello, is this job still available?",
+  "What is your exact location?",
+  "What will be your final rate?",
+  "Yes, I can do this work. Thank you!"
 ]
 
 function ChatModal({
@@ -125,7 +130,6 @@ function ChatModal({
     }
   }
 
-  // Delete an individual message (only your own)
   const handleDeleteMessage = async (messageId, senderId) => {
     if (senderId !== currentUid) return
     if (!window.confirm('کیا آپ اس پیغام کو حذف کرنا چاہتے ہیں؟')) return
@@ -138,7 +142,6 @@ function ChatModal({
     }
   }
 
-  // Clear entire chat history
   const handleClearChat = async () => {
     if (!chatId) return
     if (!window.confirm('کیا آپ تمام چیٹ ہسٹری صاف کرنا چاہتے ہیں؟ اسے واپس نہیں لایا جا سکتا۔')) return
@@ -162,7 +165,6 @@ function ChatModal({
     }
   }
 
-  // Lock / revoke contact sharing (e.g. after job is complete) - Now fully in Urdu
   const handleLockContact = async () => {
     if (!chatId) return
     if (!window.confirm('کیا آپ کانٹیکٹ شیئرنگ لاک کرنا چاہتے ہیں؟ کال/واٹس ایپ کے بٹن دوبارہ چھپ جائیں گے۔')) return
@@ -202,7 +204,7 @@ function ChatModal({
       await addDoc(messagesRef, {
         senderId: currentUid,
         senderName: currentUser.displayName || currentUser.email || 'ورکر',
-        text: "📲 میں نے اپنا رابطہ نمبر شیئر کر دیا ہے۔ آپ براہ راست کال یا واٹس ایپ کر سکتے ہیں!",
+        text: "📲 میں نے اپنا رابطہ نمبر شیئر کر دیا ہے۔ آپ براہ راست کال یا واٹس ایپ کر سکتے हैं!",
         createdAt: serverTimestamp()
       })
 
@@ -231,7 +233,7 @@ function ChatModal({
     <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-3 sm:p-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[80vh] max-h-[580px] my-auto">
 
-        {/* Header - Fixed to show dynamic recipientName and jobTitle */}
+        {/* Header */}
         <div className="bg-amber-800 text-white p-3.5 flex justify-between items-center shrink-0">
           <div className="min-w-0 flex-1 pr-2">
             <h3 className="font-bold text-sm truncate" dir="auto">{recipientName || 'کام یار صارف'}</h3>
@@ -348,7 +350,7 @@ function ChatModal({
             dir="auto"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="یہاں پیغام ٹائپ کریں..."
+            placeholder="Type your message here / یہاں پیغام ٹائپ کریں..."
             className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-700"
           />
           <button
@@ -356,7 +358,7 @@ function ChatModal({
             disabled={!newMessage.trim()}
             className="bg-amber-800 hover:bg-amber-900 text-white text-sm font-semibold px-4 py-2 rounded-xl transition disabled:opacity-50 shrink-0 cursor-pointer"
           >
-            بھیجیں
+            بھیجیں / Send
           </button>
         </form>
 
