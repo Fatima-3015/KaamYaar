@@ -21,11 +21,11 @@ KaamYaar is a web-based platform that connects **daily-wage workers** directly w
 
 # 🌍 Real-World Problem
 
-During my observation, I noticed that many skilled workers such as electricians, plumbers, painters, carpenters, masons, and laborers work temporarily with contractors.
+The idea for **KaamYaar** came from a real-life observation.
 
-Once a project is completed, many workers remain unemployed for days or even weeks while searching for another job. At the same time, many employers struggle to find reliable workers nearby.
+During my observation, I noticed that many skilled workers in Pakistan, such as electricians, plumbers, painters, carpenters, masons, and laborers, often work temporarily under contractors. Once a project is completed, many of these workers become unemployed and spend days or even weeks searching for their next opportunity. At the same time, many employers struggle to find reliable skilled workers nearby.
 
-**KaamYaar** solves this problem by allowing workers and employers to connect directly through one platform without contractors or middlemen.
+This real-world problem inspired me to develop **KaamYaar**, a platform that enables employers and skilled workers to connect directly without relying on contractors or middlemen, making it easier for workers to find nearby job opportunities and for employers to hire trusted workers quickly.
 
 ---
 
