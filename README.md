@@ -1,3 +1,4 @@
+
 # KaamYaar ⚡
 
 > **Connecting local daily-wage workers and employers across Pakistan.**
@@ -10,12 +11,46 @@
 
 ---
 
+# 🌐 Live Demo
+
+### 🚀 Try KaamYaar
+
+**Website:** https://kaam-yaar.vercel.app
+
+---
+<p align="center">
+  <img src="src/assets/kaamyaar%20-%20GIF.gif" width="100%" alt="KaamYaar Demo GIF">
+</p>
+
+# 📖 Table of Contents
+
+- App Overview
+- Real-World Problem
+- Target Audience
+- Features
+- AI Assistant
+- Tech Stack
+- Screenshots
+- Project Structure
+- Installation
+- Future Improvements
+- Developer
+- Support
+- License
+
+---
+
 # 📌 App Overview
 
 ## App Name
+
 **KaamYaar**
 
-KaamYaar is a web-based platform that connects **daily-wage workers** directly with **employers** across Pakistan. The platform removes unnecessary middlemen and helps skilled workers quickly find nearby job opportunities while allowing employers to hire trusted workers easily.
+KaamYaar is a modern web-based platform designed to connect **daily-wage workers** directly with **employers** across Pakistan.
+
+The platform helps employers quickly find skilled workers while enabling workers to discover nearby job opportunities without depending on contractors or middlemen.
+
+It provides an easy-to-use interface, real-time communication, AI-powered recommendations, and location-based search to simplify the hiring process for both sides.
 
 ---
 
@@ -23,7 +58,9 @@ KaamYaar is a web-based platform that connects **daily-wage workers** directly w
 
 The idea for **KaamYaar** came from a real-life observation.
 
-During my observation, I noticed that many skilled workers in Pakistan, such as electricians, plumbers, painters, carpenters, masons, and laborers, often work temporarily under contractors. Once a project is completed, many of these workers become unemployed and spend days or even weeks searching for their next opportunity. At the same time, many employers struggle to find reliable skilled workers nearby.
+During my observation, I noticed that many skilled workers in Pakistan—such as electricians, plumbers, painters, carpenters, masons, and laborers—often work temporarily under contractors. Once a project is completed, many of these workers become unemployed and spend days or even weeks searching for their next opportunity.
+
+At the same time, many employers struggle to find reliable skilled workers nearby.
 
 This real-world problem inspired me to develop **KaamYaar**, a platform that enables employers and skilled workers to connect directly without relying on contractors or middlemen, making it easier for workers to find nearby job opportunities and for employers to hire trusted workers quickly.
 
@@ -31,71 +68,71 @@ This real-world problem inspired me to develop **KaamYaar**, a platform that ena
 
 # 🎯 Target Audience
 
-## Employers
+## 👨‍💼 Employers
+
 - Homeowners
-- Shop owners
+- Shop Owners
 - Contractors
-- Small businesses
+- Small Businesses
+- Companies
 - Anyone looking for skilled workers
 
-## Daily-Wage Workers
+---
+
+## 👷 Daily-Wage Workers
+
 - Electricians
 - Plumbers
 - Painters
 - Carpenters
 - Masons
 - Laborers
-- Other skilled workers
-
----
-
-# 🔗 Live Demo
-
-### 🌐 Website
-
-https://kaam-yaar.vercel.app
+- Welders
+- Tile Fitters
+- General Skilled Workers
 
 ---
 
 # ✨ Features
 
-## 🔐 Authentication
+## 🔐 Authentication & Security
 
-- Firebase Authentication
-- Secure Email & Password Login
-- Sign Up
-- Forgot Password
+- Secure Firebase Authentication
+- Email & Password Login
+- User Registration
 - Email Verification
+- Forgot Password
+- Reset Password
 - Protected Routes
 - Role-Based Authentication
+- Secure User Sessions
 
 ---
 
 ## 👷 Worker Features
 
 - Create Professional Profile
-- Add Name
-- Add Skill
-- Add City
-- Daily Wage
-- Experience
-- Phone Number
+- Add Personal Information
+- Add Skill Category
+- Select City
+- Set Daily Wage
+- Add Experience
 - Availability Status
-- Browse Jobs
+- Browse Available Jobs
 - Search Jobs
 - Filter Jobs
 - Apply for Jobs
-- View Application Status
-- Real-time Notifications
+- View Job Status
+- Receive Notifications
 - Chat with Employers
-- Manage Profile
+- Edit Profile
 
 ---
 
 ## 💼 Employer Features
 
 - Post New Jobs
-- Edit Jobs
+- Edit Posted Jobs
 - Delete Jobs
 - Manage Job Listings
 - Browse Workers
@@ -103,68 +140,67 @@ https://kaam-yaar.vercel.app
 - Filter by Skill
 - Filter by City
 - View Worker Profiles
-- View Ratings
+- View Ratings & Reviews
 - Compare Applicants
 - Hire Workers
-- Leave Reviews & Ratings
+- Leave Ratings
+- Write Reviews
 
 ---
 
-## 💬 Communication
+## 💬 Communication Features
 
 - Real-Time Chat
 - Chat History
 - Delete Conversations
 - WhatsApp Integration
-- Direct Call Button
+- Direct Phone Call Button
 - Instant Notifications
 
 ---
 
-## 📍 Location Support
+## 📍 Maps & Location
 
-- City-Based Filtering
 - Interactive Maps
+- City-Based Filtering
 - Nearby Worker Search
+- Location Selection
 
 ---
 
 # 🤖 AI Assistant
 
-KaamYaar includes an intelligent AI assistant powered by **Google Gemini**.
+KaamYaar includes an intelligent AI Assistant powered by **Google Gemini AI**.
 
-### Employer Assistance
+The assistant helps both employers and workers by providing smart recommendations based on skills, location, and job requirements.
 
-- Recommend best workers
-- Match workers by skill
-- Budget recommendations
-- City-based suggestions
+### 👨‍💼 Employer Assistance
 
-### Worker Assistance
+- Recommend Best Workers
+- Match Workers by Skill
+- Budget-Based Suggestions
+- City-Based Recommendations
 
-- Recommend matching jobs
-- Improve profile suggestions
-- Career guidance
-- Smart job recommendations
+### 👷 Worker Assistance
+
+- Recommend Suitable Jobs
+- Suggest Better Opportunities
+- Improve Job Matching
+- Career Guidance
 
 ---
 
 # 🧠 AI System Prompt
 
 ```text
-You are "KaamYaar AI", a helpful assistant for KaamYaar - Pakistan's local skilled worker marketplace.
+You are "KaamYaar AI", a helpful assistant for KaamYaar — Pakistan's local skilled worker marketplace.
 
-Your job is to help employers find skilled workers including:
-- Electricians
-- Plumbers
-- Painters
-- Masons
-- Carpenters
-- Laborers
+Your role is to help employers find the most suitable skilled workers based on city, skill, and budget.
 
-You also help workers discover jobs that match their skills, city, and preferred daily wage.
+You also help workers discover jobs that best match their skills, preferred city, and expected daily wage.
 
-Always provide short, helpful, polite, and practical responses.
+Always provide concise, polite, practical, and helpful responses.
+
 ```
 
 ---
@@ -173,205 +209,166 @@ Always provide short, helpful, polite, and practical responses.
 
 ## Frontend
 
-- React
-- Vite
-- React Router
-- Tailwind CSS
-- Framer Motion
-- Lucide React
+* React
+* Vite
+* React Router
+* Tailwind CSS
+* Framer Motion
+* Lucide React
 
 ## Backend
 
-- Firebase Authentication
-- Cloud Firestore
+* Firebase Authentication
+* Cloud Firestore
 
-## AI
+## Artificial Intelligence
 
-- Google Gemini API
+* Google Gemini API
 
 ## Maps
 
-- React Leaflet
-- Leaflet
+* React Leaflet
+* Leaflet
 
 ## Deployment
 
-- Vercel
+* Vercel
 
 ---
 
 # 📸 Screenshots
 
-## 💼 Employer Dashboard
+## 🌟 Hero Banner Preview
+<img src="src/assets/Banner.png" width="100%" alt="Hero Banner">
 
-![Employer Dashboard](EmployeeDashboard.png)
+---
+
+## 💼 Employer Dashboard
+<img src="src/assets/EmployeeDashboard.png" width="100%" alt="Employer Dashboard">
 
 ---
 
 ## 📝 Posted Jobs
-
-![Posted Jobs](Employeepostedjob.png)
-
----
-
-## 💬 Chat System
-
-![Chat System](Message.png)
+<img src="src/assets/Employeepprostedjob.png" width="100%" alt="Posted Jobs">
 
 ---
 
-## 🤖 AI Assistant
-
-![AI Assistant](AI Assistant.png)
-
----
-
-## ✨ AI Assistant Recommendations
-
-![AI Assistant Recommendations](AI Assistant 2.png)
-## 💼 Employer Dashboard
-
-![Employer Dashboard](screenshots/employer-dashboard.png)
+## 👷 Worker Dashboard (English & Urdu Support)
+<img src="src/assets/Workerdashboard.png" width="100%" alt="Worker Dashboard">
+<br><br>
+<img src="src/assets/Workerdashboard(URDU).png" width="100%" alt="Worker Dashboard Urdu">
 
 ---
 
-## 🔎 Browse Jobs
-
-![Browse Jobs](screenshots/browse-jobs.png)
-
----
-
-## 💬 Chat System
-
-![Chat](screenshots/chat.png)
+## 📂 Apply for Jobs
+<img src="src/assets/ApplyforJobs.png" width="100%" alt="Apply for Jobs">
 
 ---
 
-## 🤖 AI Assistant
-
-![AI Assistant](screenshots/ai-assistant.png)
+## 💬 Real-Time Chat
+<img src="src/assets/Message.png" width="100%" alt="Chat System">
 
 ---
 
+## 🤖 AI Assistant & Recommendations
+<img src="src/assets/AI%20Assistant.png" width="100%" alt="AI Assistant">
+<br><br>
+<img src="src/assets/AI%20Assistant%202.png" width="100%" alt="AI Recommendations">
 # 📂 Project Structure
 
 ```text
-KaamYaar
-│
-├── public
-├── src
-│   ├── components
-│   ├── pages
-│   ├── context
-│   ├── hooks
-│   ├── firebase
-│   ├── assets
-│   └── App.jsx
-│
-├── AI Assistant.png
-├── AI Assistant 2.png
-├── EmployeeDashboard.png
-├── Employeepostedjob.png
-├── Message.png
-│
+kaamyaar/
+├── public/
+├── src/
+│   ├── assets/
+│   │   ├── AI Assistant.png
+│   │   ├── AI Assistant 2.png
+│   │   ├── ApplyforJobs.png
+│   │   ├── Banner.png
+│   │   ├── EmployeeDashboard.png
+│   │   ├── Employeepprostedjob.png
+│   │   ├── Message.png
+│   │   ├── Workerdashboard.png
+│   │   └── Workerdashboard(URDU).png
+│   ├── components/
+│   │   ├── ChatModal.jsx
+│   │   ├── LanguageToggle.jsx
+│   │   └── Navbar.jsx
+│   ├── context/
+│   │   └── LanguageContext.jsx
+│   ├── pages/
+│   │   ├── Landing.jsx
+│   │   ├── Login.jsx
+│   │   ├── Signup.jsx
+│   │   └── Dashboard.jsx
+│   ├── firebase.js
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── .env
 ├── package.json
-├── vite.config.js
-└── README.md
-```
+└── vite.config.js
 
-# ⚙️ Installation
-
-## Clone Repository
-
-```bash
-git clone https://github.com/Fatima-3015/KaamYaar.git
-```
-
-```bash
-cd KaamYaar
 ```
 
 ---
 
-## Install Dependencies
+# ⚙️ Installation & Setup
+
+Apne local machine par project run karne ke liye yeh steps follow karein:
+
+### 1. Clone the Repository
+
+```bash
+git clone [https://github.com/Fatima-3015/KaamYaar.git](https://github.com/Fatima-3015/KaamYaar.git)
+cd KaamYaar
+
+```
+
+### 2. Install Dependencies
 
 ```bash
 npm install
+
 ```
 
----
+### 3. Configure Environment Variables
 
-## Create Environment Variables
-
-Create a `.env` file in the project root.
+Project ke root folder mein ek `.env` file banayein aur apni Firebase credentials add karein:
 
 ```env
 VITE_FIREBASE_API_KEY=your_api_key
-
 VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-
 VITE_FIREBASE_PROJECT_ID=your_project_id
-
 VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 
-VITE_GEMINI_API_KEY=your_gemini_api_key
 ```
 
----
-
-## Start Development Server
+### 4. Run Locally
 
 ```bash
 npm run dev
-```
 
----
-
-## Build for Production
-
-```bash
-npm run build
 ```
 
 ---
 
 # 🚀 Future Improvements
 
-- Worker Verification
-- CNIC Verification
-- Push Notifications
-- Voice Search
-- Urdu Language Support
-- AI Resume/Profile Suggestions
-- Job Recommendations using AI
-- Online Payments
-- Worker Availability Calendar
-- Dark Mode
-- GPS Live Tracking
-- Employer Verification
-- Multi-language Support
+* [ ] **SMS Notifications:** Twilio ya local gateway integration for booking alerts.
+* [ ] **Payment Gateway Integration:** Secure digital escrow/wallet payments for daily wages.
+* [ ] **Advanced Geolocation Tracking:** Live tracking of workers during active jobs.
+* [ ] **Voice Search Support:** Voice queries in Urdu and English for unlettered workers.
 
 ---
 
 # 📈 Why KaamYaar?
 
-✅ Solves a real-world problem
-
-✅ Connects workers directly with employers
-
-✅ Eliminates middlemen
-
-✅ AI-powered recommendations
-
-✅ Modern responsive UI
-
-✅ Firebase-powered real-time features
-
-✅ Easy to use
+* **Direct Impact:** Solves actual unemployment and hiring friction in local communities.
+* **Bilingual Interface:** Fully supports both English and Urdu to maximize user accessibility.
+* **Modern Tech Stack:** Built with lightning-fast React, Vite, and real-time Firebase capabilities.
 
 ---
 
@@ -379,25 +376,20 @@ npm run build
 
 **Fatima Mahmood**
 
-BS Artificial Intelligence
-
-National Textile University, Faisalabad
-
-GitHub:
-https://github.com/Fatima-3015
+* **GitHub:** [Fatima-3015](https://www.google.com/search?q=https://github.com/Fatima-3015)
 
 ---
 
 # ⭐ Support
 
-If you found this project helpful, please consider giving it a **⭐ Star** on GitHub.
-
-It helps others discover the project and motivates future improvements.
+Agar aapko yeh project pasand aaye toh please repository ko **⭐ star** dein aur apne circle mein share karein!
 
 ---
 
 # 📜 License
 
-This project is licensed under the **MIT License**.
+This project is open-source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
 
-Feel free to use and modify it for educational purposes.
+```
+
+```
