@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import { sendOtp, resetRecaptcha } from '../phoneAuth'
@@ -18,6 +18,7 @@ function Signup() {
   const [otp, setOtp] = useState('')
   const [confirmationResult, setConfirmationResult] = useState(null)
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -28,6 +29,7 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccessMessage('')
 
     // Strong Password Validation: Min 8 chars, at least one number and one special character
     const minLength = 8
@@ -49,12 +51,22 @@ function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
 
+      // Send Email Verification
+      await sendEmailVerification(user)
+
       await setDoc(doc(db, 'users', user.uid), {
         email: user.email,
         createdAt: new Date().toISOString()
       })
 
-      navigate('/role-select')
+      // Sign out user so they verify email before logging in
+      await signOut(auth)
+
+      setSuccessMessage(
+        isUrdu
+          ? 'تصدیقی ای میل آپ کے ان باکس میں بھیج دی گئی ہے۔ براہ کرم ای میل verify کرنے کے بعد لاگ ان کریں۔'
+          : 'Verification email sent! Please check your inbox and verify your email before logging in.'
+      )
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setError(
@@ -83,6 +95,7 @@ function Signup() {
   const handleSendOtp = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccessMessage('')
     if (!phone.trim()) {
       setError(
         isUrdu
@@ -91,9 +104,18 @@ function Signup() {
       )
       return
     }
+
+    // Format phone number for Pakistan (+92) if user typed '03...'
+    let formattedPhone = phone.trim()
+    if (formattedPhone.startsWith('0')) {
+      formattedPhone = '+92' + formattedPhone.slice(1)
+    } else if (!formattedPhone.startsWith('+')) {
+      formattedPhone = '+' + formattedPhone
+    }
+
     setLoading(true)
     try {
-      const result = await sendOtp(phone, 'recaptcha-container-signup')
+      const result = await sendOtp(formattedPhone, 'recaptcha-container-signup')
       setConfirmationResult(result)
     } catch (err) {
       console.error(err)
@@ -111,6 +133,7 @@ function Signup() {
   const handleVerifyOtp = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccessMessage('')
     if (!otp.trim()) {
       setError(
         isUrdu
@@ -145,6 +168,7 @@ function Signup() {
   const switchMethod = (method) => {
     setAuthMethod(method)
     setError('')
+    setSuccessMessage('')
     setConfirmationResult(null)
     setOtp('')
     resetRecaptcha()
@@ -193,6 +217,15 @@ function Signup() {
                 {isUrdu ? 'لاگ ان کریں' : 'Go to Log In'}
               </Link>
             ) : null}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="bg-green-100 text-green-800 p-3 rounded-lg mb-4 text-sm font-medium">
+            {successMessage}
+            <Link to="/" className="block underline font-semibold mt-2 text-green-900">
+              {isUrdu ? 'یہاں سے لاگ ان کریں' : 'Go to Log In'}
+            </Link>
           </div>
         )}
 
@@ -260,7 +293,7 @@ function Signup() {
               <form onSubmit={handleSendOtp} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {isUrdu ? 'موبائل نمبر' : 'Mobile Number'}
+                    {isUrdu ? 'موبایل نمبر' : 'Mobile Number'}
                   </label>
                   <input
                     type="tel"
@@ -278,7 +311,7 @@ function Signup() {
                   className="w-full bg-green-800 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-900 transition disabled:opacity-50 cursor-pointer"
                 >
                   {loading 
-                    ? (isUrdu ? 'بھیجا جا رہا ہے...' : 'Sending...') 
+                    ? (isUrdu ? 'بھیجا جا रहा ہے...' : 'Sending...') 
                     : (isUrdu ? 'او ٹی پی بھیجیں' : 'Send OTP')}
                 </button>
               </form>

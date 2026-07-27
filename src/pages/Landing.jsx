@@ -268,7 +268,7 @@ export default function Landing() {
                 onClick={() => navigate('/signup')}
                 className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-5 py-3 rounded-xl shadow-md transition cursor-pointer urdu-font"
               >
-                میں ایک کام دینے والا ہوں
+                {t('employerBtn') || "میں ایک کام دینے والا ہوں"}
               </button>
               <button
                 onClick={() => navigate('/signup')}
@@ -532,8 +532,11 @@ export default function Landing() {
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-100 dark:border-gray-800/80 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
-          {t('footerRights') || '© 2026 KaamYaar. All rights reserved.'}
+        <div className="border-t border-gray-100 dark:border-gray-800/80 py-4 px-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 dark:text-gray-600">
+          <p>{t('footerRights') || '© 2026 KaamYaar. All rights reserved.'}</p>
+          <p className="mt-2 sm:mt-0 font-medium text-gray-500 dark:text-gray-400">
+            Developed by Fatima Mahmood 💻
+          </p>
         </div>
       </footer>
     </div>
