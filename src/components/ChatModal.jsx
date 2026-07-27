@@ -14,17 +14,14 @@ import {
 } from 'firebase/firestore'
 
 const QUICK_MESSAGES = [
-  // Urdu Quick Messages
-  "السلام علیکم، کیا کام دستیاب ہے؟",
-  "آپ کا مقام (Location) کہاں ہے؟",
-  "آپ کا فائنل ریٹ کیا ہوگا؟",
-  "میں کل صبح 8 بجے آ سکتا ہوں۔",
-  "ہاں، میں یہ کام کر سکتا ہوں۔",
-  // English Quick Messages
   "Hello, is this job still available?",
   "What is your exact location?",
   "What will be your final rate?",
-  "Yes, I can do this work. Thank you!"
+  "I can come tomorrow morning.",
+  "Yes, I can do this work.",
+  "السلام علیکم، کیا کام دستیاب ہے؟",
+  "آپ کا مقام (Location) کہاں ہے؟",
+  "آپ کا فائنل ریٹ کیا ہوگا؟"
 ]
 
 function ChatModal({
@@ -101,7 +98,7 @@ function ChatModal({
 
   const sendMessageText = async (textToSend) => {
     if (!textToSend.trim() || !chatId || !currentUid || !targetUid) {
-      alert("پیغام نہیں بھیجا جا سکا: غلط چیٹ سیشن یا وصول کنندہ موجود نہیں۔")
+      alert("Failed to send message: Invalid chat session or recipient.")
       return
     }
 
@@ -110,7 +107,7 @@ function ChatModal({
       await setDoc(chatDocRef, {
         participants: [currentUid, targetUid],
         jobId: jobId || '',
-        jobTitle: jobTitle || 'جنرل انکوائری',
+        jobTitle: jobTitle || 'General Inquiry',
         lastMessage: textToSend,
         updatedAt: serverTimestamp()
       }, { merge: true })
@@ -118,7 +115,7 @@ function ChatModal({
       const messagesRef = collection(db, 'chats', chatId, 'messages')
       await addDoc(messagesRef, {
         senderId: currentUid,
-        senderName: currentUser.displayName || currentUser.email || 'صارف',
+        senderName: currentUser.displayName || currentUser.email || 'User',
         text: textToSend,
         createdAt: serverTimestamp()
       })
@@ -126,25 +123,25 @@ function ChatModal({
       scrollToBottom()
     } catch (err) {
       console.error('Error sending message:', err)
-      alert('پیغام بھیجنے میں ناکامی ہوئی۔ براہ کرم فائر اسٹور رولز چیک کریں۔')
+      alert('Failed to send message. Please check Firestore rules.')
     }
   }
 
   const handleDeleteMessage = async (messageId, senderId) => {
     if (senderId !== currentUid) return
-    if (!window.confirm('کیا آپ اس پیغام کو حذف کرنا چاہتے ہیں؟')) return
+    if (!window.confirm('Are you sure you want to delete this message?')) return
 
     try {
       await deleteDoc(doc(db, 'chats', chatId, 'messages', messageId))
     } catch (err) {
       console.error('Error deleting message:', err)
-      alert('پیغام حذف کرنے میں ناکامی ہوئی۔')
+      alert('Failed to delete message.')
     }
   }
 
   const handleClearChat = async () => {
     if (!chatId) return
-    if (!window.confirm('کیا آپ تمام چیٹ ہسٹری صاف کرنا چاہتے ہیں؟ اسے واپس نہیں لایا جا سکتا۔')) return
+    if (!window.confirm('Are you sure you want to clear all chat history?')) return
 
     setClearing(true)
     try {
@@ -159,7 +156,7 @@ function ChatModal({
       }, { merge: true })
     } catch (err) {
       console.error('Error clearing chat:', err)
-      alert('چیٹ ہسٹری صاف کرنے میں ناکامی ہوئی۔')
+      alert('Failed to clear chat history.')
     } finally {
       setClearing(false)
     }
@@ -167,7 +164,7 @@ function ChatModal({
 
   const handleLockContact = async () => {
     if (!chatId) return
-    if (!window.confirm('کیا آپ کانٹیکٹ شیئرنگ لاک کرنا چاہتے ہیں؟ کال/واٹس ایپ کے بٹن دوبارہ چھپ جائیں گے۔')) return
+    if (!window.confirm('Do you want to lock contact sharing? Call/WhatsApp buttons will be hidden again.')) return
 
     try {
       await setDoc(doc(db, 'chats', chatId), {
@@ -179,13 +176,13 @@ function ChatModal({
       const messagesRef = collection(db, 'chats', chatId, 'messages')
       await addDoc(messagesRef, {
         senderId: currentUid,
-        senderName: currentUser.displayName || currentUser.email || 'صارف',
-        text: "🔒 کام مکمل ہو چکا ہے۔ رابطہ شیئرنگ دوبارہ لاک کر دی گئی ہے۔",
+        senderName: currentUser.displayName || currentUser.email || 'User',
+        text: "🔒 Job completed. Contact sharing has been locked again.",
         createdAt: serverTimestamp()
       })
     } catch (err) {
       console.error('Error locking contact:', err)
-      alert('کانٹیکٹ لاک کرنے میں ناکامی ہوئی۔')
+      alert('Failed to lock contact.')
     }
   }
 
@@ -203,16 +200,16 @@ function ChatModal({
       const messagesRef = collection(db, 'chats', chatId, 'messages')
       await addDoc(messagesRef, {
         senderId: currentUid,
-        senderName: currentUser.displayName || currentUser.email || 'ورکر',
-        text: "📲 میں نے اپنا رابطہ نمبر شیئر کر دیا ہے۔ آپ براہ راست کال یا واٹس ایپ کر سکتے हैं!",
+        senderName: currentUser.displayName || currentUser.email || 'Worker',
+        text: "📲 I have shared my contact number. You can call or WhatsApp directly!",
         createdAt: serverTimestamp()
       })
 
-      alert("رابطہ نمبر کامیابی سے شیئر ہو گیا ہے!")
+      alert("Contact number shared successfully!")
       scrollToBottom()
     } catch (err) {
       console.error('Error sharing contact:', err)
-      alert('رابطہ نمبر شیئر کرنے میں ناکامی ہوئی۔')
+      alert('Failed to share contact number.')
     }
   }
 
@@ -236,21 +233,21 @@ function ChatModal({
         {/* Header */}
         <div className="bg-amber-800 text-white p-3.5 flex justify-between items-center shrink-0">
           <div className="min-w-0 flex-1 pr-2">
-            <h3 className="font-bold text-sm truncate" dir="auto">{recipientName || 'کام یار صارف'}</h3>
+            <h3 className="font-bold text-sm truncate" dir="auto">{recipientName || 'KaamYaar User'}</h3>
             {jobTitle && <p className="text-xs text-amber-200 truncate" dir="auto">{jobTitle}</p>}
           </div>
           <div className="flex items-center gap-1 shrink-0">
             <button
               onClick={handleClearChat}
               disabled={clearing || messages.length === 0}
-              title="چیٹ ہسٹری صاف کریں"
+              title="Clear Chat History"
               className="text-white hover:bg-amber-900 px-2 py-1 rounded-lg text-xs transition disabled:opacity-40 cursor-pointer"
             >
               🧹
             </button>
             <button
               onClick={onClose}
-              title="بند کریں"
+              title="Close"
               className="text-white hover:bg-amber-900 px-2.5 py-1 rounded-lg text-sm font-bold transition cursor-pointer"
             >
               ✕
@@ -261,11 +258,11 @@ function ChatModal({
         {/* Message Container */}
         <div className="flex-1 p-3 overflow-y-auto bg-gray-50 space-y-3 min-h-0">
           {loading ? (
-            <p className="text-center text-xs text-gray-400 py-4">پیغامات لوڈ ہو رہے ہیں...</p>
+            <p className="text-center text-xs text-gray-400 py-4">Loading messages...</p>
           ) : messages.length === 0 ? (
             <div className="text-center text-gray-400 text-xs py-8">
-              <p>💬 ابھی تک کوئی پیغام نہیں۔</p>
-              <p className="mt-1">شروع کرنے کے لیے نیچے دیے گئے کوئیک بٹن استعمال کریں یا خود ٹائپ کریں!</p>
+              <p>💬 No messages yet.</p>
+              <p className="mt-1">Use the quick buttons below or type your message to start!</p>
             </div>
           ) : (
             messages.map((msg) => {
@@ -289,7 +286,7 @@ function ChatModal({
                     {isMe && (
                       <button
                         onClick={() => handleDeleteMessage(msg.id, msg.senderId)}
-                        title="پیغام حذف کریں"
+                        title="Delete Message"
                         className="absolute -left-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-red-600 text-xs cursor-pointer"
                       >
                         🗑️
@@ -307,25 +304,25 @@ function ChatModal({
         {!isContactShared ? (
           <div className="px-3 py-2 bg-amber-100/60 border-t border-amber-200 flex items-center justify-between shrink-0">
             <p className="text-[11px] text-amber-900 font-medium">
-              ڈائریکٹ کال / واٹس ایپ انلاک نہیں ہے۔
+              Direct Call / WhatsApp is locked.
             </p>
             <button
               onClick={handleShareContact}
               className="text-xs bg-green-700 hover:bg-green-800 text-white font-bold px-3 py-1.5 rounded-lg shadow-xs transition shrink-0 cursor-pointer"
             >
-              📲 رابطہ شیئر کریں
+              📲 Share Contact
             </button>
           </div>
         ) : (
           <div className="px-3 py-2 bg-green-100/60 border-t border-green-200 flex items-center justify-between shrink-0">
             <p className="text-[11px] text-green-900 font-medium">
-              ✓ رابطہ شیئر ہو گیا — کال / واٹس ایپ انلاک ہے۔
+              ✓ Contact shared — Call / WhatsApp unlocked.
             </p>
             <button
               onClick={handleLockContact}
               className="text-xs bg-gray-700 hover:bg-gray-800 text-white font-bold px-3 py-1.5 rounded-lg shadow-xs transition shrink-0 cursor-pointer"
             >
-              🔒 لاک کریں (کام مکمل)
+              🔒 Lock (Job Done)
             </button>
           </div>
         )}
@@ -350,7 +347,7 @@ function ChatModal({
             dir="auto"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message here / یہاں پیغام ٹائپ کریں..."
+            placeholder="Type your message here..."
             className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-700"
           />
           <button
@@ -358,7 +355,7 @@ function ChatModal({
             disabled={!newMessage.trim()}
             className="bg-amber-800 hover:bg-amber-900 text-white text-sm font-semibold px-4 py-2 rounded-xl transition disabled:opacity-50 shrink-0 cursor-pointer"
           >
-            بھیجیں / Send
+            Send
           </button>
         </form>
 
