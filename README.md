@@ -54,6 +54,12 @@ It provides an easy-to-use interface, real-time communication, AI-powered recomm
 
 ---
 
+> **Project Note:** KaamYaar was independently designed and developed by **Fatima Mahmood** as an academic and portfolio project. The idea originated from observing the real-world difficulties faced by daily-wage workers in finding reliable employment opportunities and employers struggling to find skilled workers without relying on middlemen.  
+>
+> The goal of this project is to create a simple, accessible, and technology-driven platform that bridges the gap between workers and employers while promoting fair employment opportunities across Pakistan.
+
+---
+
 # 🌍 Real-World Problem
 
 The idea for **KaamYaar** came from a real-life observation.
@@ -65,7 +71,6 @@ At the same time, many employers struggle to find reliable skilled workers nearb
 This real-world problem inspired me to develop **KaamYaar**, a platform that enables employers and skilled workers to connect directly without relying on contractors or middlemen, making it easier for workers to find nearby job opportunities and for employers to hire trusted workers quickly.
 
 ---
-
 # 🎯 Target Audience
 
 ## 👨‍💼 Employers
