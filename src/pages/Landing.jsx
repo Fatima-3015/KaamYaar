@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -44,7 +44,7 @@ const fadeUp = {
 
 export default function Landing() {
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const [searchTerm, setSearchTerm] = useState('')
   const [darkMode, setDarkMode] = useState(false)
@@ -93,24 +93,21 @@ export default function Landing() {
     }
   ]
 
-  const FAQS = [
-    {
-      q: t('faq1q') || 'Is KaamYaar free to use?',
-      a: t('faq1a') || 'Yes, KaamYaar is 100% free for both workers and employers.'
-    },
-    {
-      q: t('faq2q') || 'How do I contact a worker?',
-      a: t('faq2a') || 'Simply click on a worker profile to view their phone number or start a chat.'
-    },
-    {
-      q: t('faq3q') || 'How can I post a job requirement?',
-      a: t('faq3a') || 'Sign up as an employer and click "Post New Job" from your dashboard.'
-    },
-    {
-      q: t('faq4q') || 'Are the workers verified?',
-      a: t('faq4a') || 'Ratings and reviews are left by genuine employers after completed work.'
-    }
-  ]
+  const FAQS = useMemo(() => (
+    language === 'en'
+      ? [
+          { q: 'Is KaamYaar free to use?', a: 'Yes, KaamYaar is 100% free for both workers and employers.' },
+          { q: 'How do I contact a worker?', a: 'Simply click on a worker profile to view their phone number or start a chat.' },
+          { q: 'How can I post a job requirement?', a: 'Sign up as an employer and click "Post New Job" from your dashboard.' },
+          { q: 'Are the workers verified?', a: 'Ratings and reviews are left by genuine employers after completed work.' }
+        ]
+      : [
+          { q: 'کیا کام یار استعمال کرنے کے لیے مفت ہے؟', a: 'جی ہاں، کام یار ورکرز اور ایمپلائرز دونوں کے لیے بالکل مفت ہے۔' },
+          { q: 'میں کسی ورکر سے کیسے رابطہ کر سکتا ہوں؟', a: 'کسی بھی ورکر کی پروفائل پر کلک کریں اور ان کا نمبر دیکھ کر یا چیٹ کے ذریعے رابطہ کریں۔' },
+          { q: 'میں جاب کیسے پوسٹ کر سکتا ہوں؟', a: 'بطور ایمپلائر سائن اپ کریں اور اپنے ڈیش بورڈ سے "Post New Job" پر کلک کریں۔' },
+          { q: 'کیا ورکرز تصدیق شدہ ہوتے ہیں؟', a: 'جی ہاں، ریٹنگز اور ریویوز اصل ایمپلائرز کام مکمل ہونے کے بعد دیتے ہیں۔' }
+        ]
+  ), [language])
 
   const TESTIMONIALS = [
     { quote: 'Maine 10 minute mein achha electrician dhoond liya.', name: 'Ayesha', city: 'Lahore' },
