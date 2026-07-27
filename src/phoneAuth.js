@@ -1,24 +1,23 @@
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from './firebase'
 
-// Singleton pattern — survives React Fast Refresh / re-renders
 let recaptchaVerifier = null
 
-export function getRecaptchaVerifier(containerId) {
-  if (recaptchaVerifier) {
-    return recaptchaVerifier
-  }
-  recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
-    size: 'invisible'
-  })
-  return recaptchaVerifier
+function clearContainer(containerId) {
+  const el = document.getElementById(containerId)
+  if (el) el.innerHTML = ''
 }
 
-export function resetRecaptcha() {
+export function resetRecaptcha(containerId) {
   if (recaptchaVerifier) {
-    recaptchaVerifier.clear()
+    try {
+      recaptchaVerifier.clear()
+    } catch {
+      // already cleared, ignore
+    }
     recaptchaVerifier = null
   }
+  if (containerId) clearContainer(containerId)
 }
 
 export function formatPakistaniPhone(phone) {
@@ -34,6 +33,18 @@ export function formatPakistaniPhone(phone) {
 
 export async function sendOtp(phoneNumber, containerId) {
   const formattedPhone = formatPakistaniPhone(phoneNumber)
-  const verifier = getRecaptchaVerifier(containerId)
-  return await signInWithPhoneNumber(auth, formattedPhone, verifier)
+
+  // Har attempt se pehle purana verifier/DOM clean karo — taake "already rendered" na aaye
+  resetRecaptcha(containerId)
+
+  recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
+    size: 'invisible'
+  })
+
+  try {
+    return await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier)
+  } catch (err) {
+    resetRecaptcha(containerId)
+    throw err
+  }
 }

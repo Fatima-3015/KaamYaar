@@ -268,7 +268,7 @@ export default function Landing() {
                 onClick={() => navigate('/signup')}
                 className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-5 py-3 rounded-xl shadow-md transition cursor-pointer urdu-font"
               >
-                {t('employerBtn') || "میں ایک کام دینے والا ہوں"}
+                میں ایک کام دینے والا ہوں
               </button>
               <button
                 onClick={() => navigate('/signup')}
