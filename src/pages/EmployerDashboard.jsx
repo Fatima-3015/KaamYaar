@@ -9,16 +9,13 @@ import BrowseWorkers from '../components/BrowseWorkers'
 import AIChat from '../components/AIChat'
 import BottomNav from '../components/BottomNav'
 import NotificationBell from '../components/NotificationBell'
-import { seedDatabase } from '../seedData'
 
-// Translations Context and Toggle Component
 import { useLanguage } from '../context/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
 
 function EmployerDashboard() {
   const { t, language } = useLanguage()
 
-  // Dynamic Navigation Items based on Language
   const NAV_ITEMS = [
     { key: 'home', label: t('home'), icon: Home },
     { key: 'workers', label: t('workers'), icon: Search },
@@ -29,11 +26,8 @@ function EmployerDashboard() {
 
   const [user, setUser] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
-  const [seeding, setSeeding] = useState(false)
-  
-  // State for Logout Confirmation Modal
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
-  
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -54,20 +48,6 @@ function EmployerDashboard() {
     } catch (err) {
       console.error('Logout Error:', err)
       alert('Failed to log out. Please try again.')
-    }
-  }
-
-  const handleSeed = async () => {
-    if (!window.confirm(t('confirmSeed') || 'Add dummy demo data (workers + jobs) to the database?')) return
-    setSeeding(true)
-    try {
-      const count = await seedDatabase(user?.uid, user?.email)
-      alert(`${count} dummy records added successfully!`)
-    } catch (err) {
-      console.error('Seed Error:', err)
-      alert('Failed to seed data: ' + err.message)
-    } finally {
-      setSeeding(false)
     }
   }
 
@@ -110,7 +90,7 @@ function EmployerDashboard() {
             </p>
 
             {/* Quick Action Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <button
                 onClick={() => setActiveTab('post')}
                 className="p-4 border border-green-200 bg-green-50/50 rounded-xl text-left hover:border-green-400 transition"
@@ -128,17 +108,6 @@ function EmployerDashboard() {
                 <p className="text-xs text-gray-600 mt-1">
                   {t('browseWorkersDesc') || 'Directly search and contact skilled workers.'}
                 </p>
-              </button>
-            </div>
-
-            {/* TEMPORARY: Demo Seed Button */}
-            <div className="pt-4 border-t border-gray-100">
-              <button
-                onClick={handleSeed}
-                disabled={seeding}
-                className="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-amber-600 transition disabled:opacity-50"
-              >
-                {seeding ? (t('addingDemoData') || 'Adding demo data...') : (t('seedDemoData') || '🌱 Seed Demo Data')}
               </button>
             </div>
           </div>
@@ -179,18 +148,18 @@ function EmployerDashboard() {
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div 
+          <div
             className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl border border-gray-100 text-center animate-in fade-in zoom-in duration-150"
             dir={isUrdu ? 'rtl' : 'ltr'}
           >
             <div className="w-12 h-12 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               ⚠️
             </div>
-            
+
             <h3 className="text-lg font-bold text-gray-800 mb-2">
               {t('logoutTitle') || 'Are you sure you want to log out?'}
             </h3>
-            
+
             <p className="text-xs text-gray-500 mb-6 leading-relaxed">
               {t('logoutDescription') || 'You will need to sign in again to view your posted jobs and messages.'}
             </p>

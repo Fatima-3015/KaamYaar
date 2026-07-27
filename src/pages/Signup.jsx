@@ -1,37 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
-import { sendOtp, resetRecaptcha } from '../phoneAuth'
 import { useLanguage } from '../context/LanguageContext'
 
 function Signup() {
   const { language } = useLanguage ? useLanguage() : { language: 'en' }
   const isUrdu = language === 'urdu' || language === 'ur'
 
-  const [authMethod, setAuthMethod] = useState('email')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [phone, setPhone] = useState('')
-  const [otp, setOtp] = useState('')
-  const [confirmationResult, setConfirmationResult] = useState(null)
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    return () => resetRecaptcha()
-  }, [])
 
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
     setSuccessMessage('')
 
-    // Strong Password Validation: Min 8 chars, at least one number and one special character
     const minLength = 8
     const hasNumber = /\d/.test(password)
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
@@ -51,7 +40,6 @@ function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const user = userCredential.user
 
-      // Send Email Verification
       await sendEmailVerification(user)
 
       await setDoc(doc(db, 'users', user.uid), {
@@ -59,7 +47,6 @@ function Signup() {
         createdAt: new Date().toISOString()
       })
 
-      // Sign out user so they verify email before logging in
       await signOut(auth)
 
       setSuccessMessage(
@@ -92,97 +79,14 @@ function Signup() {
     }
   }
 
-  const handleSendOtp = async (e) => {
-    e.preventDefault()
-    setError('')
-    setSuccessMessage('')
-    if (!phone.trim()) {
-      setError(
-        isUrdu
-          ? 'براہ کرم اپنا موبائل نمبر درج کریں۔'
-          : 'Please enter your phone number.'
-      )
-      return
-    }
-
-    // Format phone number for Pakistan (+92) if user typed '03...'
-    let formattedPhone = phone.trim()
-    if (formattedPhone.startsWith('0')) {
-      formattedPhone = '+92' + formattedPhone.slice(1)
-    } else if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+' + formattedPhone
-    }
-
-    setLoading(true)
-    try {
-      const result = await sendOtp(formattedPhone, 'recaptcha-container-signup')
-      setConfirmationResult(result)
-    } catch (err) {
-      console.error(err)
-      setError(
-        isUrdu
-          ? 'او ٹی پی بھیجنے میں ناکامی ہوئی۔ نمبر چیک کر کے دوبارہ کوشش کریں۔'
-          : 'Failed to send OTP. Please check the number and try again.'
-      )
-      resetRecaptcha()
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault()
-    setError('')
-    setSuccessMessage('')
-    if (!otp.trim()) {
-      setError(
-        isUrdu
-          ? 'براہ کرم 6 ہندسوں کا او ٹی پی درج کریں۔'
-          : 'Please enter the OTP code.'
-      )
-      return
-    }
-    setLoading(true)
-    try {
-      const result = await confirmationResult.confirm(otp)
-      const user = result.user
-
-      await setDoc(doc(db, 'users', user.uid), {
-        phone: user.phoneNumber,
-        createdAt: new Date().toISOString()
-      })
-
-      navigate('/role-select')
-    } catch (err) {
-      console.error(err)
-      setError(
-        isUrdu
-          ? 'غلط او ٹی پی۔ براہ کرم دوبارہ کوشش کریں۔'
-          : 'Invalid OTP. Please try again.'
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const switchMethod = (method) => {
-    setAuthMethod(method)
-    setError('')
-    setSuccessMessage('')
-    setConfirmationResult(null)
-    setOtp('')
-    resetRecaptcha()
-  }
-
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center bg-no-repeat relative"
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=1920')`
       }}
       dir={isUrdu ? 'rtl' : 'ltr'}
     >
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/55 backdrop-blur-[1px]"></div>
 
       <div className={`bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative z-10 ${isUrdu ? 'text-right' : 'text-left'}`}>
@@ -190,24 +94,6 @@ function Signup() {
         <p className="text-center text-gray-600 mb-6">
           {isUrdu ? 'اپنا اکاؤنٹ بنائیں' : 'Create your account'}
         </p>
-
-        {/* Method Tabs */}
-        <div className="flex bg-gray-100 rounded-lg p-1 mb-5" dir="ltr">
-          <button
-            type="button"
-            onClick={() => switchMethod('email')}
-            className={`flex-1 py-2 rounded-md text-sm font-semibold transition ${authMethod === 'email' ? 'bg-white text-green-800 shadow' : 'text-gray-500'}`}
-          >
-            📧 Email
-          </button>
-          <button
-            type="button"
-            onClick={() => switchMethod('phone')}
-            className={`flex-1 py-2 rounded-md text-sm font-semibold transition ${authMethod === 'phone' ? 'bg-white text-green-800 shadow' : 'text-gray-500'}`}
-          >
-            📱 Mobile OTP
-          </button>
-        </div>
 
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm">
@@ -229,7 +115,7 @@ function Signup() {
           </div>
         )}
 
-        {authMethod === 'email' ? (
+        {!successMessage && (
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -282,67 +168,11 @@ function Signup() {
               disabled={loading}
               className="w-full bg-green-800 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-900 transition disabled:opacity-50 cursor-pointer"
             >
-              {loading 
-                ? (isUrdu ? 'اکاؤنٹ بن رہا ہے...' : 'Creating account...') 
+              {loading
+                ? (isUrdu ? 'اکاؤنٹ بن رہا ہے...' : 'Creating account...')
                 : (isUrdu ? 'سائن اپ کریں' : 'Sign Up')}
             </button>
           </form>
-        ) : (
-          <div>
-            {!confirmationResult ? (
-              <form onSubmit={handleSendOtp} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {isUrdu ? 'موبایل نمبر' : 'Mobile Number'}
-                  </label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-700 ${isUrdu ? 'text-right' : 'text-left'}`}
-                    placeholder="03001234567"
-                  />
-                </div>
-                <div id="recaptcha-container-signup"></div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-green-800 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-900 transition disabled:opacity-50 cursor-pointer"
-                >
-                  {loading 
-                    ? (isUrdu ? 'بھیجا جا रहा ہے...' : 'Sending...') 
-                    : (isUrdu ? 'او ٹی پی بھیجیں' : 'Send OTP')}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtp} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {isUrdu ? '6 ہندسوں کا او ٹی پی درج کریں' : 'Enter 6-digit OTP'}
-                  </label>
-                  <input
-                    type="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required
-                    maxLength={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg text-center tracking-widest focus:outline-none focus:ring-2 focus:ring-green-700"
-                    placeholder="123456"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-green-800 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-900 transition disabled:opacity-50 cursor-pointer"
-                >
-                  {loading 
-                    ? (isUrdu ? 'تصدیق ہو رہی ہے...' : 'Verifying...') 
-                    : (isUrdu ? 'تصدیق کر کے سائن اپ کریں' : 'Verify & Sign Up')}
-                </button>
-              </form>
-            )}
-          </div>
         )}
 
         <p className="text-center text-gray-600 mt-6">
