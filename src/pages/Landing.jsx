@@ -118,7 +118,6 @@ export default function Landing() {
     { quote: 'Rating dekh kar hi decide kar liya kis se kaam karwana hai.', name: 'Sana', city: 'Faisalabad' }
   ]
 
-  // Handle Dark Mode Setup
   useEffect(() => {
     const savedTheme = localStorage.getItem('kaamyaar-theme')
     const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -133,7 +132,6 @@ export default function Landing() {
     localStorage.setItem('kaamyaar-theme', next ? 'dark' : 'light')
   }
 
-  // Fetch Featured Workers
   useEffect(() => {
     try {
       const q = query(collection(db, 'workers'), orderBy('averageRating', 'desc'), limit(6))
@@ -150,7 +148,6 @@ export default function Landing() {
     }
   }, [])
 
-  // Fetch App Stats
   useEffect(() => {
     let isMounted = true
     const loadStats = async () => {
@@ -268,7 +265,7 @@ export default function Landing() {
                 onClick={() => navigate('/signup')}
                 className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-5 py-3 rounded-xl shadow-md transition cursor-pointer urdu-font"
               >
-                میں ایک کام دینے والا ہوں
+                {t('imEmployer') || "I'm an Employer"}
               </button>
               <button
                 onClick={() => navigate('/signup')}
